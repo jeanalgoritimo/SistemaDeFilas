@@ -1,5 +1,4 @@
-Amazon SQS with .NET Core Example
-Leitura e Envio de Mensagens com Amazon SQS em .NET Core
+Amazon SQS with .NET Core  
 Este exemplo demonstra como integrar o Amazon SQS (Simple Queue Service) com uma aplicação em .NET Core. Ele inclui a criação de filas, envio de mensagens, e leitura de mensagens de uma fila SQS.
 
 Pré-requisitos
