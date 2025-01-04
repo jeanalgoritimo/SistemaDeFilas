@@ -143,3 +143,6 @@ Execute o projeto com o comando:
  
 dotnet run
 O código enviará uma mensagem de um objeto Person para a fila SQS e aguardará mensagens da segunda fila, processando-as e deletando-as após o processamento.
+
+Caminho Git
+https://github.com/jeanalgoritimo/SistemaDeFilas.git
