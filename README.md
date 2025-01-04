@@ -1,76 +1,67 @@
-Amazon SQS .NET Core Example
-This project demonstrates how to interact with Amazon Simple Queue Service (SQS) using AWS SDK for .NET Core. It shows how to send and receive messages between two SQS queues. The program also uses a custom Person class for serializing and sending data as JSON.
+Amazon SQS with .NET Core Example
+This project demonstrates how to interact with Amazon SQS using AWS SDK for .NET. It shows how to send, receive, and delete messages in SQS queues.
 
-Requirements
-.NET SDK (Core or later)
-AWS SDK for .NET
-AWS Account with access to SQS
-appsettings.json for AWS credentials
-Setup
 Prerequisites
-Install .NET SDK: https://dotnet.microsoft.com/download
-Install AWS SDK for .NET:
+Before running the project, ensure the following:
+
+AWS Account: You need an AWS account with access to Amazon SQS.
+AWS SDK for .NET: This project uses the Amazon.SQS NuGet package. You can install it via the following command:
 bash
 Copiar código
 dotnet add package AWSSDK.SQS
-dotnet add package Microsoft.Extensions.Configuration
-dotnet add package Microsoft.Extensions.Configuration.Json
-AWS Credentials
-Before running the program, ensure your AWS credentials are configured in appsettings.json or as environment variables.
-
-Create a file named appsettings.json in the root directory and add your AWS credentials:
-
+AppSettings Configuration: The appsettings.json file must contain your AWS credentials, as shown below:
+appsettings.json Example:
 json
 Copiar código
 {
   "AWS": {
-    "AccessKey": "your-access-key",
-    "SecretKey": "your-secret-key"
+    "AccessKey": "your-access-key-id",
+    "SecretKey": "your-secret-access-key"
   }
 }
-Running the Program
-Open your terminal and navigate to the project directory.
-Run the application:
+Setup
+Install Dependencies: In your project folder, run:
+
+bash
+Copiar código
+dotnet restore
+Configure AWS Credentials: Add your AWS:AccessKey and AWS:SecretKey to the appsettings.json file. Make sure to replace "your-access-key-id" and "your-secret-access-key" with your actual AWS credentials.
+
+Run the Program: You can now run the application using the following command:
+
 bash
 Copiar código
 dotnet run
 Code Overview
-This application performs the following steps:
+Main Workflow
+Configuration: The program loads AWS credentials and configuration from the appsettings.json file using Microsoft.Extensions.Configuration.
 
-Configuration Setup:
+Queue Creation: The program checks if the queues (FilasAwsDotnetCore1 and FilasAwsDotnetCore) exist, and if not, it creates them.
 
-Reads AWS access credentials and other configurations from appsettings.json using Microsoft.Extensions.Configuration.
-Queue Management:
+Sending Messages: A Person object is created and serialized into a JSON string, then sent to the queue using SendMessageAsync.
 
-The program checks if the specified SQS queue exists, or creates a new one if it doesn't. Two queues are used in this example: FilasAwsDotnetCore1 and FilasAwsDotnetCore.
-Sending Messages:
+Receiving Messages: The program listens for incoming messages in the queue and processes them when they arrive. After processing a message, it is deleted from the queue.
 
-It sends a serialized Person object as a JSON string to the first queue.
-Receiving Messages:
+Classes and Methods
+Person Class: A simple class with Name, Age, and Email properties, used to send serialized data in the queue.
 
-The program enters a loop, repeatedly checking the second queue for new messages, processing them, and deleting them after successful processing.
-Custom Class:
+GetOrCreateQueueAsync: Ensures that the SQS queue exists, or creates it if not.
 
-The Person class contains properties Name, Age, and Email. This class is serialized to JSON and sent as the message body in the queue.
-Code Explanation
-AmazonSQSClient: Interacts with the SQS service to send and receive messages.
-SendMessageAsync: Sends a message to an SQS queue.
-ReceiveMessagesAsync: Receives messages from a queue, processes them, and deletes them after processing.
-GetOrCreateQueueAsync: Checks if the queue exists, creates it if necessary, and returns the queue's URL.
-Example Output
-bash
+SendMessageAsync: Sends a message (serialized object) to the specified queue.
+
+ReceiveMessagesAsync: Polls the queue for incoming messages and processes them.
+
+Sample Output
+css
 Copiar código
 Verificando ou criando a fila: FilasAwsDotnetCore1
 Enviando mensagem: {"Name":"John Doe","Age":30,"Email":"john.doe@example.com"}
 Mensagem enviada com sucesso!
-Verificando ou criando a fila: FilasAwsDotnetCore
 Aguardando mensagens...
 Mensagem recebida da segunda fila: {"Name":"John Doe","Age":30,"Email":"john.doe@example.com"}
 Mensagem deletada.
 Loop terminado da segunda fila.
-Additional Configuration
-AWS Region: The AWS region is set to us-east-1 in the code, but you can change it according to your AWS SQS region.
-Message Visibility: This code uses a long polling technique (WaitTimeSeconds = 5) to reduce unnecessary requests to SQS.
-Important Notes
-Ensure that the AWS credentials you use have the necessary permissions to interact with SQS.
-You may modify the message body and queue names based on your application needs.
+Notes
+The program runs in a loop, continuously checking and receiving messages from FilasAwsDotnetCore.
+The program stops once a message is successfully received and deleted.
+If you want to modify the behavior or add more functionality (such as sending messages to multiple queues), feel free to adjust the code accordingly.
