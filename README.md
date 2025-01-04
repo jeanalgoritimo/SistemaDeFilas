@@ -7,8 +7,7 @@ Credenciais AWS: Você precisa das chaves de acesso da AWS (AWS:AccessKey e AWS:
 .NET SDK: O projeto foi desenvolvido usando o .NET 5.0 ou superior.
 Biblioteca AWS SDK: O SDK da AWS para .NET é necessário para se comunicar com o SQS.
 Para instalar o SDK da AWS, execute:
-
-bash
+ 
 Copiar código
 dotnet add package AWSSDK.SQS
 
